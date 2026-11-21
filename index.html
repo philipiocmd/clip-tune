@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101312"><title>ClipTune — Media Converter</title>
+<style>
+:root{color-scheme:dark;--bg:#101312;--panel:#191f1d;--line:#303b36;--text:#eff5f1;--muted:#9aa9a0;--accent:#a5f05c}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -25%,#2b4934,transparent 55%),var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:940px;margin:auto;padding:30px 18px 60px}.nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:55px}
+.brand{display:flex;gap:10px;align-items:center;font-size:19px;font-weight:850}.mark{width:38px;height:38px;border-radius:12px;background:var(--accent);color:#14200e;display:grid;place-items:center}
+.pill{border:1px solid var(--line);border-radius:25px;padding:6px 11px;color:var(--muted);font-size:12px}.hero{text-align:center;margin-bottom:30px}
+.eyebrow{color:var(--accent);font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}.hero h1{font-size:clamp(36px,6vw,58px);line-height:1.05;letter-spacing:-2px;margin:13px 0}.hero h1 span{color:var(--accent)}
+.hero p{color:var(--muted);max-width:620px;margin:auto}.card{background:linear-gradient(145deg,#1c2420,#171d1a);border:1px solid var(--line);border-radius:19px;padding:22px;box-shadow:0 22px 60px #0003}
+.mode{display:flex;gap:7px;background:#111714;border:1px solid var(--line);padding:5px;border-radius:12px;width:max-content;margin:0 auto 20px}
+.mode button{background:transparent;color:var(--muted);border:0;padding:10px 18px;border-radius:8px;font:inherit;font-weight:750;cursor:pointer}.mode button.active{background:var(--accent);color:#15200f}
+.panel{display:none}.panel.active{display:block}.drop{border:1.5px dashed #526257;border-radius:15px;padding:34px 15px;text-align:center;background:#111714;cursor:pointer}
+.drop.drag{border-color:var(--accent);background:#1b2a1e}.uploadicon{width:50px;height:50px;border-radius:15px;background:#29392b;color:var(--accent);display:grid;place-items:center;font-size:25px;margin:0 auto 12px}
+.drop p{color:var(--muted);font-size:13px;margin:5px 0 14px}.browse{display:inline-block;background:var(--accent);color:#16210f;padding:9px 15px;border-radius:9px;font-weight:850}.drop input{display:none}
+.fileinfo{display:none;margin-top:14px;padding:12px;background:#111714;border:1px solid var(--line);border-radius:11px;align-items:center;gap:12px}
+.filedetails{flex:1;min-width:0}.filename{font-weight:750;overflow-wrap:anywhere}.filesize{font-size:12px;color:var(--muted)}
+.remove{border:1px solid var(--line);background:#202825;color:var(--muted);border-radius:8px;padding:7px 10px;cursor:pointer}
+.settings{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:17px}.setting{background:#111714;border:1px solid var(--line);border-radius:11px;padding:12px}
+.setting label{display:block;color:var(--muted);font-size:12px;font-weight:750;margin-bottom:7px}.setting select,.setting input,.urlinput{width:100%;background:#1b241e;border:1px solid #3a483e;color:var(--text);padding:10px;border-radius:8px;font:inherit}
+.full{grid-column:1/-1}.trimrow{display:grid;grid-template-columns:1fr 1fr;gap:10px}.primary{width:100%;margin-top:17px;background:var(--accent);color:#14200e;border:0;border-radius:10px;padding:14px;font:inherit;font-weight:900;cursor:pointer}
+.primary:disabled{opacity:.4;cursor:not-allowed}.progressarea{display:none;margin-top:16px}.progress{height:8px;background:#303a33;border-radius:20px;overflow:hidden}.bar{height:100%;width:0;background:var(--accent);transition:width .2s}
+.progresslabel{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-top:6px}.status{min-height:20px;color:var(--muted);font-size:13px;margin-top:11px}
+.status.error{color:#ff7777}.status.good{color:var(--accent)}.result{display:none;margin-top:15px;padding:14px;background:#1b2b1e;border:1px solid #3b5b3e;border-radius:11px}
+.result a{display:inline-block;margin-top:8px;color:#c9ff9a;font-weight:800}.notice{text-align:center;color:var(--muted);font-size:12px;max-width:690px;margin:16px auto 0}
+.features,.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:19px}.feature,.step{background:#171e1a;border:1px solid var(--line);border-radius:12px;padding:14px}
+.feature b,.step b{display:block;font-size:13px;margin-bottom:4px}.feature span,.step p{font-size:12px;color:var(--muted);margin:0}
+.how{margin-top:40px}.how h2{text-align:center;font-size:23px}.num{color:var(--accent);font-size:12px;font-weight:900}footer{text-align:center;color:#738077;font-size:12px;margin-top:32px}
+.ytbox{background:#111714;border:1px solid var(--line);border-radius:14px;padding:16px}.ytbox label{display:block;color:var(--muted);font-size:12px;font-weight:800;margin-bottom:8px}
+.ytrow{display:flex;gap:9px}.ytrow .urlinput{flex:1;min-width:0}.ytrow button,.secondary{border:1px solid #465448;background:#263329;color:var(--text);padding:10px 14px;border-radius:9px;font:inherit;font-weight:750;cursor:pointer}
+.ytpreview{display:none;margin-top:16px;grid-template-columns:180px 1fr;gap:14px;align-items:start}.ytpreview img{width:100%;border-radius:10px;background:#222}.ytpreview h3{margin:0 0 6px;font-size:16px}.ytpreview p{margin:0;color:var(--muted);font-size:12px}
+.ytbuttons{display:flex;flex-wrap:wrap;gap:9px;margin-top:13px}.ytbuttons a{display:inline-block;text-decoration:none}
+.ytnote{margin-top:14px;padding:12px;border-radius:10px;background:#202920;border:1px solid #3a4b3b;color:#c4d1c6;font-size:12px}
+@media(max-width:620px){.wrap{padding:20px 12px 45px}.nav{margin-bottom:38px}.card{padding:14px}.settings,.features,.steps{grid-template-columns:1fr}.full{grid-column:auto}.mode{width:100%}.mode button{flex:1;padding:10px 8px;font-size:13px}.ytrow{flex-direction:column}.ytpreview{grid-template-columns:1fr}.ytpreview img{max-width:260px}}
+</style>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap"
+      rel="stylesheet"
+    />
+</head>
+<body><div
+  style="
+    background-color: rgba(67, 17, 85, 0.85);
+    border: 2px solid #ff99ff;
+    border-radius: 12px;
+    padding: 12px 20px;
+    margin: 0 auto 24px auto;
+    max-width: 900px;
+    color: white;
+    font-family: 'Audiowide', sans-serif;
+    font-size: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  "
+>
+  <span> Built by Philipiocmd — Check out my other projects at</span>
+  <a
+    href="https://philipiocmd.github.io"
+    target="_blank"
+    style="
+      color: #ff99ff;
+      text-decoration: underline;
+    "
+    >philipiocmd.github.io ↗</a
+  ><div class="wrap">
+<header class="nav"><div class="brand"><div class="mark">▶</div> ClipTune</div><div class="pill">Free · Browser-based</div></header>
+<section class="hero"><div class="eyebrow">Simple media tools</div><h1>Your media.<br><span>Your format.</span></h1><p>Convert files you already have, or look up a YouTube video and open the official options for it.</p></section>
+<main class="card">
+<div class="mode" role="tablist" aria-label="Choose a tool">
+<button id="convertTab" class="active" role="tab" aria-selected="true">⇄ Convert files</button>
+<button id="youtubeTab" role="tab" aria-selected="false">▶ Download from YouTube</button>
+</div>
+<section id="convertPanel" class="panel active">
+<div class="mode" style="margin-top:0"><button id="audioMode" class="active">♫ MP3 Audio</button><button id="videoMode">▣ MP4 Video</button></div>
+<div class="drop" id="drop"><div class="uploadicon">↑</div><strong>Drop a media file here</strong><p>or choose a file from your device</p><label class="browse" for="fileInput">Choose file</label><input id="fileInput" type="file" accept="audio/*,video/*"></div>
+<div class="fileinfo" id="fileInfo"><div>▤</div><div class="filedetails"><div class="filename" id="fileName"></div><div class="filesize" id="fileSize"></div></div><button class="remove" id="removeFile">Remove</button></div>
+<div class="settings">
+<div class="setting" id="audioQuality"><label for="quality">AUDIO QUALITY</label><select id="quality"><option value="320">320 kbps · Highest</option><option value="256">256 kbps · High</option><option value="192" selected>192 kbps · Standard</option><option value="128">128 kbps · Smaller</option><option value="96">96 kbps · Compact</option></select></div>
+<div class="setting" id="videoQuality" style="display:none"><label for="resolution">VIDEO RESOLUTION</label><select id="resolution"><option value="original">Keep original</option><option value="1080">1080p</option><option value="720" selected>720p</option><option value="480">480p</option><option value="360">360p</option></select></div>
+<div class="setting full"><label>TRIM FILE (OPTIONAL · SECONDS)</label><div class="trimrow"><input id="start" type="number" min="0" step=".1" placeholder="Start · e.g. 0"><input id="end" type="number" min="0" step=".1" placeholder="End · blank = end"></div></div>
+</div>
+<button class="primary" id="convert" disabled>Convert to MP3 ↗</button>
+<div class="progressarea" id="progressArea"><div class="progress"><div class="bar" id="bar"></div></div><div class="progresslabel"><span id="progressText">Preparing…</span><span id="percent">0%</span></div></div>
+<div class="status" id="status">Choose a local audio or video file to get started.</div>
+<div class="result" id="result"><b>Your file is ready!</b><div id="resultText"></div><a id="download">↓ Download converted file</a></div>
+</section>
+<section id="youtubePanel" class="panel">
+<div class="ytbox" id="ogmp3Box" style="margin-bottom:15px">
+<label>OGMP3</label>
+<p id="ogmp3Message" style="color:var(--muted);font-size:13px;margin:0 0 12px">Trying to load OGMP3 here…</p>
+<iframe id="ogmp3Frame" title="OGMP3 website" src="https://ogmp3.com/" loading="eager" referrerpolicy="no-referrer" style="display:block;width:100%;height:560px;margin-top:14px;border:1px solid var(--line);border-radius:10px;background:#111714" sandbox="allow-forms allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+<div id="ogmp3Fallback" style="display:none;text-align:center;padding:34px 12px">
+<div style="font-size:38px;margin-bottom:8px">↗</div>
+<strong style="display:block;font-size:20px;margin-bottom:8px">OGMP3 couldn't be embedded</strong>
+<p style="color:var(--muted);font-size:13px;max-width:440px;margin:0 auto 18px">The site may block iframe embedding, or your browser may be preventing it from loading. Open it directly in a new tab instead.</p>
+<a href="https://ogmp3.com/" target="_blank" rel="noopener noreferrer" style="display:inline-block;background:var(--accent);color:#15200f;padding:15px 28px;border-radius:11px;font-weight:900;text-decoration:none;font-size:16px">OPEN OGMP3 ↗</a>
+</div></div>
+<div class="ytbox">
+
+<label for="youtubeUrl">YOUTUBE VIDEO URL</label>
+<div class="ytrow"><input class="urlinput" id="youtubeUrl" type="url" placeholder="https://www.youtube.com/watch?v=..." autocomplete="off"><button id="previewBtn">Preview video</button></div>
+<div class="status" id="ytStatus">Paste a YouTube link to preview the video.</div>
+<div class="ytpreview" id="ytPreview"><img id="ytThumb" alt="YouTube video thumbnail"><div><h3 id="ytTitle">Video title</h3><p id="ytAuthor"></p><div class="ytbuttons"><a class="secondary" id="openVideo" target="_blank" rel="noopener">Open on YouTube ↗</a><a class="secondary" id="openStudio" href="https://studio.youtube.com/" target="_blank" rel="noopener">YouTube Studio ↗</a></div></div></div>
+</div>
+<div class="ytnote"><b>Note:</b> OGMP3 is an external third-party website, not part of ClipTune. Its availability and terms are controlled by its operator. Only download content you own or have permission to download. If the embedded page does not appear, use the Open OGMP3 link above.</div>
+</section>
+</main>
+<p class="notice">File conversion runs locally in your browser using FFmpeg WebAssembly. Your selected file is not uploaded to a conversion server. Only convert media you own or have permission to use.</p>
+<section class="features"><div class="feature"><b>◎ Private by design</b><span>Local files stay on your device during conversion.</span></div><div class="feature"><b>⇄ Two output formats</b><span>Convert to MP3 audio or MP4 video.</span></div><div class="feature"><b>◷ Trim your clip</b><span>Choose start and end times before converting.</span></div></section>
+<section class="how"><h2>Three steps. That's it.</h2><div class="steps"><div class="step"><div class="num">01</div><b>Choose your tool</b><p>Convert a local file or paste a YouTube link.</p></div><div class="step"><div class="num">02</div><b>Pick your settings</b><p>Choose quality and optionally trim local files.</p></div><div class="step"><div class="num">03</div><b>Save or open</b><p>Download your converted file or open YouTube's official options.</p></div></div></section>
+<footer>ClipTune · A simple browser-based media utility</footer></div>
+<script type="module">
+import { FFmpeg } from 'https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.15/dist/esm/index.js';
+const $=id=>document.getElementById(id);let file=null,mode='audio',ff=null,loaded=false,outUrl=null;
+// Cross-origin iframe contents cannot be inspected, so this is a best-effort timeout fallback.
+let ogFrameLoaded=false;
+$('ogmp3Frame').addEventListener('load',()=>{
+  ogFrameLoaded=true;
+  $('ogmp3Message').textContent='If the embedded page looks blank or shows an error, use the direct link below.';
+});
+window.setTimeout(()=>{
+  if(!ogFrameLoaded){
+    $('ogmp3Frame').style.display='none';
+    $('ogmp3Message').style.display='none';
+    $('ogmp3Fallback').style.display='block';
+  } else {
+    const link=document.createElement('div');
+    link.style.cssText='text-align:center;margin-top:12px';
+    link.innerHTML='<a href="https://ogmp3.com/" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:800">Having trouble? Open OGMP3 in a new tab ↗</a>';
+    $('ogmp3Box').appendChild(link);
+  }
+},7000);
+function status(t,c=''){$('status').textContent=t;$('status').className='status '+c}
+function choosePanel(which){const convert=which==='convert';$('convertPanel').classList.toggle('active',convert);$('youtubePanel').classList.toggle('active',!convert);$('convertTab').classList.toggle('active',convert);$('youtubeTab').classList.toggle('active',!convert);$('convertTab').setAttribute('aria-selected',String(convert));$('youtubeTab').setAttribute('aria-selected',String(!convert))}
+$('convertTab').onclick=()=>choosePanel('convert');$('youtubeTab').onclick=()=>choosePanel('youtube');
+function chooseMode(m){mode=m;$('audioMode').classList.toggle('active',m==='audio');$('videoMode').classList.toggle('active',m==='video');$('audioQuality').style.display=m==='audio'?'block':'none';$('videoQuality').style.display=m==='video'?'block':'none';$('convert').textContent=m==='audio'?'Convert to MP3 ↗':'Convert to MP4 ↗';$('fileInput').accept=m==='audio'?'audio/*,video/*':'video/*';$('result').style.display='none'}
+$('audioMode').onclick=()=>chooseMode('audio');$('videoMode').onclick=()=>chooseMode('video');
+function setFile(f){if(!f)return;if(mode==='video'&&!f.type.startsWith('video/')){status('For MP4 output, choose a video file.','error');return}file=f;$('fileName').textContent=f.name;$('fileSize').textContent=(f.size/1048576).toFixed(2)+' MB · '+(f.type||'Unknown format');$('fileInfo').style.display='flex';$('convert').disabled=false;$('result').style.display='none';status('File ready. Choose your settings and convert.','good')}
+$('fileInput').onchange=e=>setFile(e.target.files[0]);$('removeFile').onclick=()=>{file=null;$('fileInput').value='';$('fileInfo').style.display='none';$('convert').disabled=true;$('result').style.display='none';status('Choose a local audio or video file to get started.')};
+const drop=$('drop');drop.ondragover=e=>{e.preventDefault();drop.classList.add('drag')};drop.ondragleave=()=>drop.classList.remove('drag');drop.ondrop=e=>{e.preventDefault();drop.classList.remove('drag');setFile(e.dataTransfer.files[0])};
+function prog(p,t){$('progressArea').style.display='block';$('bar').style.width=p+'%';$('percent').textContent=Math.round(p)+'%';$('progressText').textContent=t}
+async function engine(){if(loaded)return ff;ff=new FFmpeg();ff.on('progress',({progress})=>prog(Math.min(99,progress*100),'Converting…'));status('Loading conversion engine. The first load may take a moment…');await ff.load({coreURL:'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/umd/ffmpeg-core.js',wasmURL:'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/umd/ffmpeg-core.wasm'});loaded=true;return ff}
+const safe=s=>s.replace(/[^\w.-]+/g,'_').replace(/^_+|_+$/g,'')||'media';
+$('convert').onclick=async()=>{if(!file)return;$('convert').disabled=true;$('result').style.display='none';if(outUrl)URL.revokeObjectURL(outUrl);const ext=file.name.match(/\.[^.]+$/)?.[0]||'.bin',input='input'+ext,output=mode==='audio'?'output.mp3':'output.mp4';
+try{const f=await engine();prog(1,'Preparing file…');await f.writeFile(input,new Uint8Array(await file.arrayBuffer()));const start=$('start').value.trim(),end=$('end').value.trim();if(start&&Number(start)<0)throw Error('Start time cannot be negative.');if(end&&Number(end)<=Number(start||0))throw Error('End time must be later than start time.');const trim=[];if(start)trim.push('-ss',start);if(end)trim.push('-to',end);
+if(mode==='audio')await f.exec(['-i',input,...trim,'-vn','-codec:a','libmp3lame','-b:a',$('quality').value+'k',output]);else{const r=$('resolution').value,args=['-i',input,...trim,'-c:v','libx264','-preset','ultrafast','-crf','23','-c:a','aac','-b:a','128k','-movflags','+faststart'];if(r!=='original')args.push('-vf',`scale=-2:'min(${r},ih)'`);await f.exec([...args,output])}
+prog(100,'Finishing…');const data=await f.readFile(output),blob=new Blob([data.buffer],{type:mode==='audio'?'audio/mpeg':'video/mp4'});outUrl=URL.createObjectURL(blob);const name=safe(file.name.replace(/\.[^.]+$/,''))+(mode==='audio'?'.mp3':'.mp4');$('download').href=outUrl;$('download').download=name;$('resultText').textContent=name+' · '+(blob.size/1048576).toFixed(2)+' MB';$('result').style.display='block';status('Conversion complete. Your file is ready to save.','good');try{await f.deleteFile(input);await f.deleteFile(output)}catch{}
+}catch(e){console.error(e);status('Conversion failed: '+(e.message||String(e)),'error');prog(0,'Conversion failed')}finally{$('convert').disabled=!file}};
+function getYouTubeId(value){try{const u=new URL(value);if(u.hostname==='youtu.be')return u.pathname.slice(1).split('/')[0];if(['youtube.com','www.youtube.com','m.youtube.com','music.youtube.com'].includes(u.hostname)){if(u.pathname==='/watch')return u.searchParams.get('v');const m=u.pathname.match(/^\/(?:shorts|embed|live)\/([^/?]+)/);return m?.[1]||null}}catch{}return null}
+$('previewBtn').onclick=()=>{const raw=$('youtubeUrl').value.trim(),id=getYouTubeId(raw);$('ytPreview').style.display='none';if(!id||!/^[\w-]{11}$/.test(id)){$('ytStatus').textContent='That does not look like a valid YouTube video link. Try a standard watch, Shorts, or youtu.be URL.';$('ytStatus').className='status error';return}
+const canonical='https://www.youtube.com/watch?v='+id;$('ytThumb').src='https://img.youtube.com/vi/'+id+'/hqdefault.jpg';$('openVideo').href=canonical;$('ytTitle').textContent='YouTube video';$('ytAuthor').textContent='Video preview';$('ytPreview').style.display='grid';$('ytStatus').textContent='Video link recognised. Preview thumbnail loaded.';$('ytStatus').className='status good';
+fetch('https://www.youtube.com/oembed?url='+encodeURIComponent(canonical)+'&format=json').then(r=>{if(!r.ok)throw Error('Preview details unavailable');return r.json()}).then(data=>{$('ytTitle').textContent=data.title||'YouTube video';$('ytAuthor').textContent='By '+(data.author_name||'YouTube creator')}).catch(()=>{$('ytAuthor').textContent='Open the video on YouTube to view its details.'});
+};
+$('youtubeUrl').addEventListener('keydown',e=>{if(e.key==='Enter')$('previewBtn').click()});
+</script></body></html>
