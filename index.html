@@ -97,12 +97,12 @@
 <div class="ytbox" id="ogmp3Box" style="margin-bottom:15px">
 <label>OGMP3</label>
 <p id="ogmp3Message" style="color:var(--muted);font-size:13px;margin:0 0 12px">Trying to load OGMP3 here…</p>
-<iframe id="ogmp3Frame" title="OGMP3 website" src="https://ogmp3.com/" loading="eager" referrerpolicy="no-referrer" style="display:block;width:100%;height:560px;margin-top:14px;border:1px solid var(--line);border-radius:10px;background:#111714" sandbox="allow-forms allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+<iframe id="ogmp3Frame" title="OGMP3 website" src="https://ogmp3.com/v2/#main/" loading="eager" referrerpolicy="no-referrer" style="display:block;width:100%;height:560px;margin-top:14px;border:1px solid var(--line);border-radius:10px;background:#111714" sandbox="allow-forms allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
 <div id="ogmp3Fallback" style="display:none;text-align:center;padding:34px 12px">
 <div style="font-size:38px;margin-bottom:8px">↗</div>
 <strong style="display:block;font-size:20px;margin-bottom:8px">OGMP3 couldn't be embedded</strong>
 <p style="color:var(--muted);font-size:13px;max-width:440px;margin:0 auto 18px">The site may block iframe embedding, or your browser may be preventing it from loading. Open it directly in a new tab instead.</p>
-<a href="https://ogmp3.com/" target="_blank" rel="noopener noreferrer" style="display:inline-block;background:var(--accent);color:#15200f;padding:15px 28px;border-radius:11px;font-weight:900;text-decoration:none;font-size:16px">OPEN OGMP3 ↗</a>
+<a href="https://ogmp3.com/v2/#main/" target="_blank" rel="noopener noreferrer" style="display:inline-block;background:var(--accent);color:#15200f;padding:15px 28px;border-radius:11px;font-weight:900;text-decoration:none;font-size:16px">OPEN OGMP3 ↗</a>
 </div></div>
 <div class="ytbox">
 
@@ -135,7 +135,7 @@ window.setTimeout(()=>{
   } else {
     const link=document.createElement('div');
     link.style.cssText='text-align:center;margin-top:12px';
-    link.innerHTML='<a href="https://ogmp3.com/" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:800">Having trouble? Open OGMP3 in a new tab ↗</a>';
+    link.innerHTML='<a href="https://ogmp3.com/v2/#main/" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:800">Having trouble? Open OGMP3 in a new tab ↗</a>';
     $('ogmp3Box').appendChild(link);
   }
 },7000);
